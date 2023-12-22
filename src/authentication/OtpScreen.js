@@ -46,18 +46,20 @@ const OtpScreen = ({navigation, route }) => {
         console.log('Response Data:', responseData);
 
         if (responseData?.message == "OTP verified success") {
-          // Alert.alert('OTP Verification Successful',
-          //   [
-          //     {
-          //       text: 'OK',
-          //       onPress: () => {
-          //         setIsVerified(true);
-          //         navigation.navigate('Home');
-          //       },
-          //     },
-          //   ]);
-          setIsVerified(true);
-          navigation.navigate('Home');
+          
+
+          Alert.alert('Verified','OTP Verification Successful', [
+            {
+              text: 'OK',
+              onPress: () => {
+                setIsVerified(true);
+                navigation.navigate('Home');
+              },
+            },
+          ]);
+
+          // setIsVerified(true);
+          // navigation.navigate('Home');
         } else {
           console.log('Incorrect or incomplete OTP');
           Alert.alert('Error', 'Incorrect or incomplete OTP');
@@ -135,9 +137,9 @@ const OtpScreen = ({navigation, route }) => {
         ))}
       </View>
 
-      <Button mode="contained" style={styles.verify} onPress={verifyOTP}>
-        Verify
-      </Button>
+      <TouchableOpacity mode="contained" style={styles.verify} onPress={verifyOTP}>
+      <Text style={{color:"white", fontSize: 16,}}>  Verify</Text>
+      </TouchableOpacity>
     </View>
   );
 };

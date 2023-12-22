@@ -137,7 +137,7 @@ const Registration = ({ navigation }) => {
       );
     }
   } catch (error) {
-    console.error('API request failed', error);
+    // console.error('API request failed', error);
   
     // Check if the error has a response object
     if (error.response && error.response.status === 400) {

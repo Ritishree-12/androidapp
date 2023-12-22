@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+
 import { createStackNavigator } from '@react-navigation/stack';
 import Registration from './src/authentication/Registration';
 import Login from './src/authentication/Login';
@@ -14,7 +15,11 @@ import ChooseDestination from './src/authentication/ChooseDestination';
 
 const Stack = createStackNavigator();
 
+
+
 function App() {
+
+  
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Splash">
