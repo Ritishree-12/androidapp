@@ -3,8 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'reac
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-const OtpScreen = ({ route }) => {
-  const navigation = useNavigation();
+const OtpScreen = ({navigation, route }) => {
+  // const navigation = useNavigation();
   const [otp1, setOtp1] = useState('');
   const [otp2, setOtp2] = useState('');
   const [otp3, setOtp3] = useState('');
@@ -42,20 +42,20 @@ const OtpScreen = ({ route }) => {
       console.log('API Response:', response);
 
       if (response.ok) {
-        const responseData = await response.json();
+        const responseData = await response?.json();
         console.log('Response Data:', responseData);
 
-        if (responseData.hasOwnProperty('message') && responseData.message === 'OTP verified success') {
-          Alert.alert('OTP Verification Successful',
-          [
-            {
-              text: 'OK',
-              onPress: () => {
-                setIsVerified(true);
-                navigation.navigate('Home');
-              },
-            },
-          ]);
+        if (responseData?.message == "OTP verified success") {
+          // Alert.alert('OTP Verification Successful',
+          //   [
+          //     {
+          //       text: 'OK',
+          //       onPress: () => {
+          //         setIsVerified(true);
+          //         navigation.navigate('Home');
+          //       },
+          //     },
+          //   ]);
           setIsVerified(true);
           navigation.navigate('Home');
         } else {

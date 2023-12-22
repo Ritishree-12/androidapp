@@ -2,6 +2,7 @@ import React  from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import AddressPickup from "./AddressPickup";
 import { ScrollView } from "react-native-gesture-handler";
+import Custombtn from "./Custombtn";
 
 
  const ChooseLocation =()=>{
@@ -16,6 +17,7 @@ import { ScrollView } from "react-native-gesture-handler";
            <AddressPickup  placeholderText  ='Enter Pickup Location'/>
            <View style={{marginBottom: 10}}/>
            <AddressPickup  placeholderText  ='Enter Distination Location'/>
+           {/* <Custombtn btnText="Done" btnStyle={{marginTop:24}} /> */}
            </ScrollView>
         </View>
         

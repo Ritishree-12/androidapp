@@ -1,19 +1,36 @@
 import React  from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-const Custombtn =()=>{
+
+const Custombtn =({
+    onPress=()=>{},
+    btnStyle ={},
+    btnText
+    
+})=>{
     return (
-        <View style= {styles.container}>
-            <Text>destination</Text>
-        </View>
+        <TouchableOpacity
+        onPress={onPress}
+        style={{...styles.btnStyle, ...btnStyle}}
+        >
+            <Text>{btnText}</Text>
+
+        </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create ({
-    container:{
-        flex: 1,
+    btnStyle:{
+        height: 40,
+        justifyContent: "center",
+        alignItems: 'center',
+        backgroundColor: 'white',
+        paddingHorizontal: 16,
+        borderWidth:1
        
     },
+
+
 })
 
 export default Custombtn;

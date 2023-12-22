@@ -85,12 +85,12 @@ const Login = ({navigation}) => {
           }
         } catch (otpError) {
           console.error("Error sending OTP:", otpError);
-          navigation.navigate("Registration");
+        
         }
       } else {
         // Handle other types of errors
         console.error('An error occurred during the request:', error);
-        navigation.navigate("Registration");
+      
       }
     }
     
