@@ -8,6 +8,9 @@ import Onboarding from './src/screens/onboardingscreens/Onboarding';
 import Onboard from './src/screens/onboardingscreens/Onboard';
 import Welcome from './src/screens/welcome/Welcome';
 import Splash from './src/screens/splash/Splash';
+import Home from './src/authentication/Home';
+import ChooseLocation from './src/authentication/ChooseLocation';
+import ChooseDestination from './src/authentication/ChooseDestination';
 
 const Stack = createStackNavigator();
 
@@ -35,6 +38,22 @@ function App() {
           component={OtpScreen}
           options={{ title: "Back" }}
         />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ title: "Back" }}
+        />
+         <Stack.Screen
+          name="ChooseLocation"
+          component={ChooseLocation}
+          options={{ title: "Back" }}
+        />
+          <Stack.Screen
+          name="ChooseDestination"
+          component={ChooseDestination}
+          options={{ title: "Back" }}
+        />
+
           <Stack.Screen
           name="Onboarding"
           component={Onboarding}

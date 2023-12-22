@@ -1,47 +1,105 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert,Image } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert, Image, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import axios from 'axios';
 
-const Login = () => {
-  const navigation = useNavigation();
+const Login = ({navigation}) => {
+ 
+
   const [numberInput, setNumberInput] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [registerNo, setRegisterNo] = useState(false);
+
 
   const showMyDialog = () => {
     Alert.alert(
       "Error",
-      "Mobile Number incorrect\nPlease enter mobile number correctly",
-      [{ text: "OK", onPress: () => {} }],
+      "Mobile Number incorrect\nPlease enter the mobile number correctly",
+      [{ text: "OK", onPress: () => { } }],
       { cancelable: false }
     );
   };
 
-  
   const sendOtp = async () => {
-    const url = `https://control.msg91.com/api/v5/otp?template_id=646b0553d6fc0550857a9702&mobile=91${phoneNumber}`;
 
+    
+    const customerData = {
+      email: "demo@gmail.com",
+      customer_name: "demo" ,
+      mobile_number: `+91${phoneNumber}`,
+      password: "Demo@12345",
+    };
 
+    console.log(customerData,"customerData");
+
+    // const response = await axios.post(
+    //   'http://13.200.75.208:4001/v1/users/signUp',
+    //   customerData,
+    //   {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       Accept: 'application/json',
+    //     },
+    //   }
+    // );
+  
+    // console.log('response', response.data);
 
     try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authkey: "395607ATzxdWwee644b4b4bP1", // replace with your Msg91 key
-        },
-      });
-    // const authkey = await response.json()
-
-      if (response.ok) {
-        navigation.navigate("OtpScreen",{phoneNumber:phoneNumber});
-        console.log("msgs",await response.json());
-      } else {
-        console.error("Error:", response.status);
+      const response = await axios.post(
+        'http://13.200.75.208:4001/v1/users/signUp',
+        customerData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        }
+      );
+      console.log("response",response);
+      if (response.data){
+        navigation.navigate("Registration")
       }
+    
+      // Handle the response or do something with it if needed
+    
     } catch (error) {
-      console.error("Error:", error);
+      if (error.response && error.response.status === 400) {
+        const url = `https://control.msg91.com/api/v5/otp?template_id=646b0553d6fc0550857a9702&mobile=91${phoneNumber}`;
+    
+        try {
+          const otpResponse = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              authkey: "395607ATzxdWwee644b4b4bP1", // replace with your Msg91 key
+            },
+          });
+    
+          if (otpResponse.ok) {
+            navigation.navigate("OtpScreen", { phoneNumber: phoneNumber });
+            console.log("OTP Sent:", await otpResponse.json());
+          } else {
+            console.error("Error sending OTP:", otpResponse.status);
+          }
+        } catch (otpError) {
+          console.error("Error sending OTP:", otpError);
+          navigation.navigate("Registration");
+        }
+      } else {
+        // Handle other types of errors
+        console.error('An error occurred during the request:', error);
+        navigation.navigate("Registration");
+      }
     }
+    
+    
+    
+
+    
+
+    
   };
 
   return (
@@ -65,7 +123,7 @@ const Login = () => {
           onPress={() => {
             if (numberInput) {
               sendOtp();
-              
+
             } else {
               showMyDialog();
             }
@@ -74,14 +132,14 @@ const Login = () => {
         >
           <Text style={styles.buttonText}>Get OTP</Text>
         </Button>
-      </View>  
+      </View>
       <View style={styles.orContainer}>
-          <View style={styles.horizontalLine} />
-          <Text style={styles.or}>or</Text>
-          <View style={styles.horizontalLine} />
-        </View>
+        <View style={styles.horizontalLine} />
+        <Text style={styles.or}>or</Text>
+        <View style={styles.horizontalLine} />
+      </View>
       <View>
-      <TouchableOpacity style={styles.googleButton}>
+        <TouchableOpacity style={styles.googleButton}>
           <Image
             source={require("../../assets/google-icon.png")}
             style={styles.googleImage}
@@ -104,7 +162,7 @@ const Login = () => {
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
@@ -143,7 +201,7 @@ const styles = {
     backgroundColor: "#EE272E",
     alignItems: "center",
     justifyContent: "center",
-    color:'#fff'
+    color: '#fff'
   },
   buttonText: {
     color: "#fff",
@@ -202,6 +260,6 @@ const styles = {
   signupLink: {
     color: "#EE272E",
   },
-};
+});
 
 export default Login;
