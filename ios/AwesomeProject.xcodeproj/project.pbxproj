@@ -387,7 +387,7 @@
 			);
 			inputPaths = (
 			);
-			name = "Start Packager";
+			name = "Start r";
 			outputFileListPaths = (
 			);
 			outputPaths = (

@@ -19,3 +19,5 @@ const styles = StyleSheet.create ({
 })
 
 export default ChooseDestination;
+
+// id("com.google.gms.google-services") version "4.4.0" apply false

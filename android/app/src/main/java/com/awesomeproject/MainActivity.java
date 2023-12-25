@@ -19,6 +19,15 @@ public class MainActivity extends ReactActivity {
   }
 
 
+ @Override
+    protected void onCreate(Bundle savedInstanceState) {
+       SplashScreen.show(this);  // The second parameter is whether to hide splash screen after react-native initialized. It is false by default.
+        super.onCreate(savedInstanceState);
+        
+        
+       
+    }
+
 
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util class {@link

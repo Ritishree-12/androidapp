@@ -1,82 +1,51 @@
-import React, {useEffect} from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-
-import { createStackNavigator } from '@react-navigation/stack';
-import Registration from './src/authentication/Registration';
-import Login from './src/authentication/Login';
-import OtpScreen from './src/authentication/OtpScreen';
-import Onboarding from './src/screens/onboardingscreens/Onboarding';
-import Onboard from './src/screens/onboardingscreens/Onboard';
-import Welcome from './src/screens/welcome/Welcome';
-import Splash from './src/screens/splash/Splash';
-import Home from './src/authentication/Home';
-import ChooseLocation from './src/authentication/ChooseLocation';
-import ChooseDestination from './src/authentication/ChooseDestination';
-
-const Stack = createStackNavigator();
+import React , { useEffect} from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import AppNavigator from './src/Navigation/AppNavigation';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './src/utils/store';
+import SplashScreen from 'react-native-splash-screen';
+// import messaging from '@react-native-firebase/messaging';
+import { useNavigation } from '@react-navigation/native';
+import { requestUserPermission , notificationListner} from './src/utils/notificationServices'
 
 
+const App = () => {
+ 
+  useEffect(() => {
 
-function App() {
-
+    const timer = setTimeout(() => {
+      SplashScreen.hide();
+      
+    }, 3000);
   
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash">
-      <Stack.Screen
-          name="Splash"
-          component={Splash}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Registration"
-          component={Registration}
-          options={{ title: "Back" }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{ title: "Back" }}
-        />
-         <Stack.Screen
-          name="OtpScreen"
-          component={OtpScreen}
-          options={{ title: "Back" }}
-        />
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{ title: "Back" }}
-        />
-         <Stack.Screen
-          name="ChooseLocation"
-          component={ChooseLocation}
-          options={{ title: "Back" }}
-        />
-          <Stack.Screen
-          name="ChooseDestination"
-          component={ChooseDestination}
-          options={{ title: "Back" }}
-        />
+    // Cleanup the timer when the component unmounts
+    return () => clearTimeout(timer);
+  }, []);
+  
 
-          <Stack.Screen
-          name="Onboarding"
-          component={Onboarding}
-          options={{ headerShown: false }}
-        />
-          <Stack.Screen
-          name="Onboard"
-          component={Onboard}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Welcome"
-          component={Welcome}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+  useEffect (()=>{
+    requestUserPermission()
+    notificationListner()
+    // const unsubscribe = messaging().onMessage(async remoteMessage => {
+    //   Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    // });
+
+    // return unsubscribe;
+    
+  },[])
+
+
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+       <AppNavigator/>
+
+      </PersistGate>
+    </Provider>
+   
+
   );
-}
+};
 
 export default App;

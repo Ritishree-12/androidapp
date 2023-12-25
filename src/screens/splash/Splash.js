@@ -2,15 +2,15 @@ import React, { useEffect } from "react";
 import { View, Image, StyleSheet } from "react-native";
 
 
-
+//the code is not use right now //
 const Splash = ({ navigation }) => {
   useEffect(() => {
     // Add any initialization logic or navigation logic here
 
     // Navigate to the Welcome screen after a certain time (e.g., 2 seconds)
     const timer = setTimeout(() => {
-      navigation.replace("Onboarding");
-    }, 2000);
+      navigation.navigate("Onboarding");
+    }, 200);
 
     // Clear the timer on component unmount
     return () => clearTimeout(timer);
