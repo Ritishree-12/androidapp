@@ -90,7 +90,7 @@ const Login = ({navigation}) => {
       
       }
     }
-
+  };
 
 
 
@@ -163,7 +163,7 @@ const Login = ({navigation}) => {
     
 
     
-  };
+
 
   return (
     <View style={styles.container}>
