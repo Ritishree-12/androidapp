@@ -30,140 +30,132 @@ const Registration = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
-  const [password, setPassword] = useState(""); 
+  const [password, setPassword] = useState("");
 
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
 
-  useEffect(() => {
-    validateForm();
-  }, [name, email, mobileNumber, password]);
 
-  const validateForm = () => {
-    let errors = {};
 
-    if (!name) {
-      errors.name = "Name is required.";
-    }
-
-    if (!email) {
-      errors.email = "Email is required.";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      errors.email = "Email is invalid.";
-    }
-
-    if (!mobileNumber) {
-      errors.mobileNumber = "Mobile number is required.";
-    } else if (
-      !/^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[789]\d{9}|(\d[ -]?){10}\d$/.test(
-        mobileNumber
-      )
-    ) {
-      errors.mobileNumber = "Mobile number should only contain numbers.";
-    }
-
-    if (!password) {
-      errors.password = "Password is required.";
-    } else if (password.length < 6) {
-      errors.password = "Password should be at least 6 characters long.";
-    }
-
-    setErrors(errors);
-    setIsFormValid(Object.keys(errors).length === 0);
-  };
-
-  const renderError = (fieldName) => {
-    return errors[fieldName] && <Text style={styles.errorText}>{errors[fieldName]}</Text>;
-  };
-
-  
 
 
   const handleSignUp = async () => {
 
-   
-      // Check if the form is valid before submitting
-      if (!isFormValid) {
-        Alert.alert('Error', 'Please fill all the fields correctly.');
-        return;
-      }
+    if (!name.trim() || !email.trim() || !mobileNumber.trim() || !password.trim()) {
+      Alert.alert('Error', 'Please fill all the fields.');
+      return;
+    }
+
+    // Validate email format
+    if (!/\S+@\S+\.\S+/.test(email.trim())) {
+      Alert.alert('Error', 'Invalid email format.');
+      return;
+    }
+
+
+
+    // Validate mobile number format
+    if (!/^[789]\d{9}$/.test(mobileNumber.trim()) && !/^\+91[789]\d{9}$/.test(mobileNumber.trim())) {
+      Alert.alert('Error', 'Mobile number should have 10 digits, excluding +91.');
+      return;
+    }
+
+
+    // Check if the mobile number starts with +91
+    if (!mobileNumber.trim().startsWith('+91')) {
+      Alert.alert('Error', 'Mobile number should start with +91.');
+      return;
+    }
+
+    // Validate password length
+    if (password.trim().length < 6) {
+      Alert.alert('Error', 'Password should be at least 6 characters long.');
+      return;
+    }
+
+
+    // Check if the form is valid before submitting
+    // if (!isFormValid) {
+    //   Alert.alert('Error', 'Please fill all the fields correctly.');
+    //   return;
+    // }
     const customerData = {
       email: email,
-      customer_name: name ,
+      customer_name: name,
       mobile_number: mobileNumber,
       password: password,
     };
-  
 
 
 
-  try {
-    console.log("customerData", customerData);
-    const response = await axios.post(
-      'http://13.200.75.208:4001/v1/users/signUp',
-      customerData,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      }
-    );
-  
-    console.log('response', response.data);
-  
-    // Check the status code of the response
-    if (response.status === 201) {
-      // Successful registration
-      Alert.alert('Sign Up Success', 'Customer registered successfully! Please login',
-      [
+
+    try {
+      console.log("customerData", customerData);
+      const response = await axios.post(
+        'http://13.200.75.208:4001/v1/users/signUp',
+        customerData,
         {
-          text: 'OK',
-          onPress: () => navigation.navigate('Login'),
-        },
-      ]
-      );
-    
-      console.log("response", response);
-      // You may navigate to another screen or perform additional actions here
-    } else {
-      // Handle other status codes
-      console.error('Unexpected status code', response.status);
-      Alert.alert(
-        'Error',
-        'An error occurred while processing your request. Please try again.',
-      
-      );
-    }
-  } catch (error) {
-    // console.error('API request failed', error);
-  
-    // Check if the error has a response object
-    if (error.response && error.response.status === 400) {
-      // User already exists, provide guidance
-      Alert.alert(
-        'User Exists',
-        'Mobile number already registered. Log in or use another number (e.g., +91 XXXXXXXXXX).',
-        [
-          {
-            text: 'OK',
-            onPress: () => navigation.navigate('Login'),
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
           },
-        ]
+        }
       );
-    
-    } else {
-      // Handle other errors
-      Alert.alert('Error', 'An error occurred while processing your request.');
+
+      console.log('response', response.data);
+
+      // Check the status code of the response
+      if (response.status === 201) {
+        // Successful registration
+        Alert.alert('Sign Up Success', 'Customer registered successfully! Please login',
+          [
+            {
+              text: 'OK',
+              onPress: () => navigation.navigate('Login'),
+            },
+          ]
+        );
+
+        console.log("response", response);
+        // You may navigate to another screen or perform additional actions here
+      } else {
+        // Handle other status codes
+        console.error('Unexpected status code', response.status);
+        Alert.alert(
+          'Error',
+          'An error occurred while processing your request. Please try again.',
+
+        );
+      }
+    } catch (error) {
+      // console.error('API request failed', error);
+
+      // Check if the error has a response object
+      if (error.response && error.response.status === 400) {
+        // User already exists, provide guidance
+        Alert.alert(
+          'User Exists',
+          'Mobile number already registered. Log in or use another number (e.g., +91 XXXXXXXXXX).',
+          [
+            {
+              text: 'OK',
+              onPress: () => navigation.navigate('Login'),
+            },
+          ]
+        );
+
+      } else {
+        // Handle other errors
+        Alert.alert('Error', 'An error occurred while processing your request.');
+      }
     }
+
   }
-  
-}
-  
-  
-    
-  
+
+
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Register New customer</Text>
@@ -194,13 +186,13 @@ const Registration = ({ navigation }) => {
           value={mobileNumber}
           onChangeText={(text) => setMobileNumber(text)}
         />
-         <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
         <View style={styles.checkboxContainer}>
           <CheckBox
             title={
@@ -257,7 +249,7 @@ const styles = StyleSheet.create({
     ...commonInputStyle,
     height: 60,
     backgroundColor: COLORS.PRIMARY,
-    borderColor:'red',
+    borderColor: 'red',
     justifyContent: "center",
     alignItems: "center",
   },
