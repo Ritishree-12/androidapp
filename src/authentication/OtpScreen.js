@@ -120,7 +120,7 @@ const OtpScreen = ({ route,navigation }) => {
               text: 'OK',
               onPress: () => {
                 setIsVerified(true);
-                navigation.navigate('Home', {AuthToken: AuthToken});
+                navigation.navigate('HomeScreen', {AuthToken: AuthToken});
               },
             },
           ]);

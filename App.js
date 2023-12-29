@@ -1,5 +1,5 @@
 import React , { useEffect} from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {PermissionsAndroid, Platform} from 'react-native'
 import AppNavigator from './src/Navigation/AppNavigation';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -7,9 +7,11 @@ import { store, persistor } from './src/utils/store';
 import SplashScreen from 'react-native-splash-screen';
 // import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
+import Geolocation from '@react-native-community/geolocation';
+
 import { requestUserPermission , notificationListner} from './src/utils/notificationServices'
 
-
+navigator.geolocation = require('@react-native-community/geolocation');
 const App = () => {
  
   useEffect(() => {
@@ -17,7 +19,7 @@ const App = () => {
     const timer = setTimeout(() => {
       SplashScreen.hide();
       
-    }, 3000);
+    }, 1000);
   
     // Cleanup the timer when the component unmounts
     return () => clearTimeout(timer);
@@ -34,6 +36,39 @@ const App = () => {
     // return unsubscribe;
     
   },[])
+
+  const androidPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "ezTruck App Camera Permission",
+          message:
+            "ezTruck App needs access to your location " +
+            "so you can take awesome rides.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use the location");
+      } else {
+        console.log("Location permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      androidPermission();
+    } else {
+      // IOS
+      Geolocation.requestAuthorization();
+    }
+  }, [])
 
 
   return (

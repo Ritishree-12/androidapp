@@ -12,6 +12,11 @@ import Splash from '../screens/splash/Splash';
 import Home from '../authentication/Home';
 import ChooseLocation from '../authentication/ChooseLocation';
 import ChooseDestination from '../authentication/ChooseDestination';
+import HomeScreen from '../screens/home/HomeScreen';
+import TruckTypes from '../screens/trucktypes/TruckTypes';
+import TruckRow from '../screens/trucktypes/TruckRow';
+import DestinationSearch from '../screens/destinationsearch/DestinationSearch';
+import SearchResult from '../screens/destinationsearch/SearchResult';
 
 const Stack = createStackNavigator();
 
@@ -24,26 +29,33 @@ function AppNavigation() {
     <NavigationContainer>
       <Stack.Navigator >
         {isLoggedIn ? (
-          <>
-         
+          <>        
           <Stack.Screen
-            name="Home"
-            component={Home}
+            name="HomeScreen"
+            component={HomeScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen
-              name="ChooseLocation"
-              component={ChooseLocation}
-              options={{ title: "Back" }}
+              name="TruckTypes"
+              component={TruckTypes}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="ChooseDestination"
-              component={ChooseDestination}
-              options={{ title: "Back" }}
+              name="TruckRow"
+              component={TruckRow}
+              options={{ headerShown: false }}
             />
-
+            <Stack.Screen
+            name="DestinationSearch"
+            component={DestinationSearch}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SearchResult"
+            component={SearchResult}
+            options={{ headerShown: false }}
+          />
           </>
-
 
           ) : (
           <>
@@ -76,11 +88,7 @@ function AppNavigation() {
               name="OtpScreen"
               component={OtpScreen}
               options={{ title: "Back" }}
-            />
-
-
-            
-           
+            />  
           </>
         )}
       </Stack.Navigator>
