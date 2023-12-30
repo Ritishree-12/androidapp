@@ -66,7 +66,7 @@ const OtpScreen = ({ route,navigation }) => {
       Alert.alert('OTP Already Verified', 'You have already verified the OTP.', [
         {
           text: 'OK',
-          onPress: () => navigation.navigate('Home'),
+          onPress: () => navigation.navigate('HoomeScreen'),
         },
       ]);
       return;
@@ -97,7 +97,7 @@ const OtpScreen = ({ route,navigation }) => {
               text: 'OK',
               onPress: () => {
                 setIsVerified(true);
-                navigation.navigate('Home');
+                navigation.navigate('HomeScreen');
               },
             },
           ]);
