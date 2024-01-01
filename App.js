@@ -1,5 +1,5 @@
-import React , { useEffect} from 'react';
-import {PermissionsAndroid, Platform} from 'react-native'
+import React, { useEffect } from 'react';
+import { PermissionsAndroid, Platform } from 'react-native'
 import AppNavigator from './src/Navigation/AppNavigation';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -9,24 +9,25 @@ import SplashScreen from 'react-native-splash-screen';
 import { useNavigation } from '@react-navigation/native';
 import Geolocation from '@react-native-community/geolocation';
 
-import { requestUserPermission , notificationListner} from './src/utils/notificationServices'
+import { requestUserPermission, notificationListner } from './src/utils/notificationServices'
+import Root from './src/Navigation/RootNavigator';
 
 navigator.geolocation = require('@react-native-community/geolocation');
 const App = () => {
- 
+
   useEffect(() => {
 
     const timer = setTimeout(() => {
       SplashScreen.hide();
-      
+
     }, 1000);
-  
+
     // Cleanup the timer when the component unmounts
     return () => clearTimeout(timer);
   }, []);
-  
 
-  useEffect (()=>{
+
+  useEffect(() => {
     requestUserPermission()
     notificationListner()
     // const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -34,8 +35,8 @@ const App = () => {
     // });
 
     // return unsubscribe;
-    
-  },[])
+
+  }, [])
 
   const androidPermission = async () => {
     try {
@@ -74,11 +75,11 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-       <AppNavigator/>
-
+        {/* <AppNavigator/> */}
+        <Root />
       </PersistGate>
     </Provider>
-   
+
 
   );
 };
