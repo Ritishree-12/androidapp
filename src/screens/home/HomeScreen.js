@@ -6,18 +6,21 @@ import {
   ScrollView,
   Dimensions,
   Pressable,
+  Image,
 } from "react-native";
-import BottomSheet from "@gorhom/bottom-sheet";
-import Icon from "react-native-vector-icons/FontAwesome6";
+ import Icon from "react-native-vector-icons/FontAwesome6";
+
 import HomeMap from "../../map/HomeMap";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler"; // Assuming TouchableOpacity is imported from 'react-native-gesture-handler'
+import Menu from "./Menu";
 
 const HomeScreen = (props) => {
   const navigation = useNavigation();
   const goToSearch = () => {
     navigation.navigate("DestinationSearch");
   };
+  const route = useRoute();
 
   const [pickupLocation, setPickupLocation] = useState("");
   const [dropLocation, setDropLocation] = useState("");
@@ -29,18 +32,23 @@ const HomeScreen = (props) => {
 
   return (
     <View style={styles.container}>
+      <View>
+       <Menu/>
+      </View>
       <View style={{ height: Dimensions.get("window").height - 400 }}>
         <HomeMap />
       </View>
       <View style={styles.locationContainer}>
         <Text style={{ color: "#EE272E", fontWeight: 600, fontSize: 18, padding: 10 }}>Where are you going today?</Text>
         <Pressable style={styles.locationButton} onPress={goToSearch}>
-          <Icon name="location-dot" size={20} color="red" />
-          <Text style={styles.locationText}>From</Text>
+          <Icon name="location-crosshairs" size={16} color="green" />
+          <Text style={styles.locationText}>From Where</Text>
+          {/* <Icon name="location-dot" size={20} color="#EE272E" style={{}} /> */}
         </Pressable>
         <Pressable style={styles.locationButton} onPress={goToSearch}>
-          <Icon name="location-dot" size={20} color="green" />
-          <Text style={styles.locationText}>To</Text>
+          <Icon name="location-dot" size={16} color="#EE272E" />
+          <Text style={styles.locationText}>To Where</Text>
+          {/* <Icon name="location-dot" size={20} color="#EE272E" /> */}
         </Pressable>
       </View>
 
@@ -55,7 +63,7 @@ const HomeScreen = (props) => {
             }}
             onPress={() => setDropLocation(location)}
           >
-            <Text style={{ color: "white", fontWeight: "bold" }}>{location}</Text>
+            <Text style={{ color: "gray", fontWeight: "bold" }}>{location}</Text>
           </Pressable>
         ))}
       </ScrollView>
@@ -66,7 +74,7 @@ const HomeScreen = (props) => {
           backgroundColor: "#EE272E",
           borderColor: "#EE272E",
           borderRadius: 40,
-          padding: 20,
+          padding: 18,
           margin: 10,
           alignItems: "center",
           borderWidth: 1,
@@ -93,7 +101,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column', // Change to column
   },
   locationButton: {
-    padding: 16,
+    padding: 14,
     backgroundColor: 'transparent',
     borderRadius: 40,
     alignItems: 'center',
@@ -105,9 +113,10 @@ const styles = StyleSheet.create({
 
   },
   locationText: {
-    color: 'red',
+    color: 'gray',
     fontSize: 18,
     marginLeft: 10,
+    alignItems:'center'
   },
   recentLocationsContainer: {
     margin: 10,
@@ -115,6 +124,7 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+ 
 });
 
 export default HomeScreen;

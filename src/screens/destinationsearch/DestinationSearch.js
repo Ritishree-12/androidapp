@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, SafeAreaView, StyleSheet } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useNavigation } from '@react-navigation/native';
+import Icon from "react-native-vector-icons/FontAwesome6";
 import axios from 'axios'; // Import axios for making HTTP requests
 import PlaceRow from './PlaceRow';
 const homePlace = {
@@ -65,7 +66,7 @@ const DestinationSearch = () => {
     <SafeAreaView>
       <View style={styles.container}>
         <GooglePlacesAutocomplete
-          placeholder="Where from?"
+          placeholder="Enter PickUp Location"
           onPress={(data, details = null) => {
             setOriginPlace({ data, details });
           }}
@@ -74,7 +75,7 @@ const DestinationSearch = () => {
           currentLocation={true}
           currentLocationLabel="Your Current Location"
           styles={{
-            // textInput: styles.textInput,
+            textInput: styles.textInput,
             container: styles.autocompleteContainer,
             listView: styles.listView,
             separator: styles.separator,
@@ -89,7 +90,7 @@ const DestinationSearch = () => {
           predefinedPlaces={[homePlace, workPlace]}
         />
         <GooglePlacesAutocomplete
-          placeholder="Where to?"
+          placeholder="Enter Drop Location"
           onPress={(data, details = null) => {
             setDestinationPlace({ data, details });
           }}
@@ -99,7 +100,7 @@ const DestinationSearch = () => {
             textInput: styles.textInput,
             container: {
               ...styles.autocompleteContainer,
-              top: 0,
+              top: 58,
             },
             separator: styles.separator,
           }}
@@ -112,82 +113,80 @@ const DestinationSearch = () => {
         />
         
         {/* Circle near Origin input */}
-        <View style={styles.circle} />
+        <Icon name="location-dot" size={20} color="green" />
         {/* Line between dots */}
         <View style={styles.line} />
         {/* Square near Destination input */}
-        <View style={styles.square} />
+        <Icon name="location-dot" size={20} color="red"  style={styles.square}/>
       </View>
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    // padding: 16,
-    backgroundColor: 'green',
+    padding: 10,
+    height: '100%',
   },
   textInput: {
-    height: 50,
-    backgroundColor: 'red',
-    paddingLeft: 16,
-    borderRadius: 10,
-    marginBottom: 10,
-    fontSize: 16,
+    padding: 8,
+    backgroundColor: '#eee',
+    marginVertical: 2,
+    marginLeft: 20,
+    borderColor: 'red',
+    borderRadius: 40,
+    borderWidth: 1,
+    color: 'black',
+    // backgroundColor:"green",
+    height:50
   },
   separator: {
-    backgroundColor: '#e0e0e0',
+    backgroundColor: 'grey',
     height: 1,
   },
   listView: {
-    flex: 1,
-    marginTop: 10,
+    position: 'absolute',
+    top: 125,
   },
   autocompleteContainer: {
     position: 'absolute',
-    top: 20,
-    left: 16,
-    right: 16,
+    top: 0,
+    left: 10,
+    right: 10,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10,
+    marginVertical: 10,
   },
   iconContainer: {
     backgroundColor: '#A2A2A2',
-    padding: 8,
-    borderRadius: 25,
-    marginRight: 10,
+    padding: 5,
+    borderRadius: 50,
+    marginRight: 15,
   },
-  locationText: {
-    fontSize: 16,
-  },
+  locationText: {},
   circle: {
     width: 20,
     height: 20,
     backgroundColor: 'red',
     position: 'absolute',
-    top: 40,
-    left: 10,
+    top: 20,
+    left: 8,
     borderRadius: 20,
   },
   line: {
     width: 2,
-    height: 60,
+    height: 42,
     backgroundColor: '#C4C4C4',
     position: 'absolute',
-    top: 60,
-    left: 19,
+    top: 40,
+    left: 18,
   },
   square: {
-    width: 20,
-    height: 20,
-    backgroundColor: 'green',
+    // backgroundColor: 'green',
     position: 'absolute',
-    top: 120,
-    left: 10,
-    borderRadius: 4,
+    top: 80,
+    left: 8,
   },
 });
 export default DestinationSearch;
